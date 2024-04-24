@@ -51,6 +51,8 @@ return { -- LSP Configuration & Plugins
           vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
         end
 
+        print('LSP ATTATCH')
+
         map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
         map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
         map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
@@ -80,6 +82,7 @@ return { -- LSP Configuration & Plugins
             vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
           end, '[T]oggle Inlay [H]ints')
         end
+
       end,
     })
 
@@ -100,9 +103,9 @@ return { -- LSP Configuration & Plugins
     --  - settings (table): Override the default settings passed when initializing the server.
     --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
     local servers = {
-      -- clangd = {},
+      clangd = {},
       -- gopls = {},
-      -- pyright = {},
+      pyright = {},
       -- rust_analyzer = {},
       -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
       --
@@ -111,22 +114,26 @@ return { -- LSP Configuration & Plugins
       --
       -- But for many setups, the LSP (`tsserver`) will work just fine
       tsserver = {
-        setup {
-          init_options = {
-            plugins = {
-              name = '@vue/typescript-plugin',
-              location = '/usr/local/lib/node_modules/@vue/typescript-plugin',
-              languages = { 'javascript', 'typescript', 'vue' },
-            },
-          },
-        },
+        single_file_support = false,
+        root_dir = require('lspconfig.util').root_pattern('node-server'),
+        -- init_options = {
+        --   plugins = {
+        --     {
+        --       name = "@vue/typescript-plugin",
+        --       location = "home/bradley/.nvm/versions/node/v16.5.0/lib/node_modules/@vue/typescript-plugin",
+        --       languages = { "javascript", "typescript", "vue" }
+        --     }
+        --   }
+        -- }
       },
       volar = {
-        setup {
-          filetypes = { 'typescript', 'javascript', 'vue', 'json' },
-        },
+        filetypes = { "vue" },
+        root_dir = require('lspconfig.util').root_pattern('vue.config.js'),
+        -- init_options = {
+        --   tsdk = '/home/bradley/.nvm/versions/node/v16.5.0/lib/node_modules/typescript/lib',
+        -- }
       },
-      --
+
 
       lua_ls = {
         -- cmd = {...},
@@ -144,6 +151,8 @@ return { -- LSP Configuration & Plugins
       },
     }
 
+    require('neodev').setup({})
+
     -- Ensure the servers and tools above are installed
     --  To check the current status of installed tools and/or manually install
     --  other tools, you can run
@@ -156,6 +165,7 @@ return { -- LSP Configuration & Plugins
     -- for you, so that they are available from within Neovim.
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {
+
       'stylua', -- Used to format Lua code
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
