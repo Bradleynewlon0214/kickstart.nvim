@@ -51,8 +51,6 @@ return { -- LSP Configuration & Plugins
           vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
         end
 
-        print('LSP ATTATCH')
-
         map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
         map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
         map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
@@ -104,36 +102,21 @@ return { -- LSP Configuration & Plugins
     --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
     local servers = {
       clangd = {},
-      -- gopls = {},
       pyright = {},
-      -- rust_analyzer = {},
-      -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-      --
-      -- Some languages (like typescript) have entire language plugins that can be useful:
-      --    https://github.com/pmizio/typescript-tools.nvim
-      --
-      -- But for many setups, the LSP (`tsserver`) will work just fine
-      tsserver = {
-        single_file_support = false,
-        root_dir = require('lspconfig.util').root_pattern('node-server'),
-        -- init_options = {
-        --   plugins = {
-        --     {
-        --       name = "@vue/typescript-plugin",
-        --       location = "home/bradley/.nvm/versions/node/v16.5.0/lib/node_modules/@vue/typescript-plugin",
-        --       languages = { "javascript", "typescript", "vue" }
-        --     }
-        --   }
-        -- }
-      },
+
       volar = {
-        filetypes = { "vue" },
-        root_dir = require('lspconfig.util').root_pattern('vue.config.js'),
+        filetypes = { 'clangd', 'gopls', 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+        init_options = {
+          vue = {
+            hybridMode = false,
+          },
+        },
+        -- filetypes = { "vue" },
+        -- root_dir = require('lspconfig.util').root_pattern('vue.config.js'),
         -- init_options = {
         --   tsdk = '/home/bradley/.nvm/versions/node/v16.5.0/lib/node_modules/typescript/lib',
         -- }
       },
-
 
       lua_ls = {
         -- cmd = {...},

@@ -52,6 +52,9 @@ return { -- Fuzzy Finder (files, lsp, etc)
         ['ui-select'] = {
           require('telescope.themes').get_dropdown(),
         },
+        workspaces = {
+          path_hl = "String"
+        },
       },
     }
 
