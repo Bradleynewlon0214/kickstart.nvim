@@ -105,11 +105,11 @@ return { -- LSP Configuration & Plugins
       pyright = {},
 
       volar = {
-        filetypes = { 'clangd', 'gopls', 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+        filetypes = { 'typescript', 'javascript', 'vue' },
         init_options = {
-          vue = {
-            hybridMode = false,
-          },
+          typescript = {
+            tsdk = '/home/noname/.nvm/versions/node/v22.11.0/lib/node_modules/typescript/lib/'
+          }
         },
         -- filetypes = { "vue" },
         -- root_dir = require('lspconfig.util').root_pattern('vue.config.js'),
