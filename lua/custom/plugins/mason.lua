@@ -77,17 +77,13 @@ return { -- LSP Configuration & Plugins
 
         if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
           map('<leader>th', function()
-            vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bfnr = event.buf })
           end, '[T]oggle Inlay [H]ints')
         end
 
       end,
     })
 
-    -- LSP servers and clients are able to communicate to each other what features they support.
-    --  By default, Neovim doesn't support everything that is in the LSP specification.
-    --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
-    --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
@@ -102,22 +98,17 @@ return { -- LSP Configuration & Plugins
     --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
     local servers = {
       clangd = {},
-      pyright = {},
-
       volar = {
-        filetypes = { 'typescript', 'javascript', 'vue' },
+        filetypes = { 'vue' },
         init_options = {
           typescript = {
             tsdk = '/home/noname/.nvm/versions/node/v22.11.0/lib/node_modules/typescript/lib/'
           }
         },
-        -- filetypes = { "vue" },
-        -- root_dir = require('lspconfig.util').root_pattern('vue.config.js'),
-        -- init_options = {
-        --   tsdk = '/home/bradley/.nvm/versions/node/v16.5.0/lib/node_modules/typescript/lib',
-        -- }
       },
-
+      vtsls= {
+        filetypes = { 'javascript', 'typescript' }
+      },
       lua_ls = {
         -- cmd = {...},
         -- filetypes = { ...},
