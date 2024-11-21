@@ -98,16 +98,62 @@ return { -- LSP Configuration & Plugins
     --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
     local servers = {
       clangd = {},
-      volar = {
-        filetypes = { 'vue' },
+        volar = {
+          init_options = {
+            vue = {
+              hybridMode = false,
+            },
+          },
+          settings = {
+            typescript = {
+              inlayHints = {
+                enumMemberValues = {
+                  enabled = true,
+                },
+                functionLikeReturnTypes = {
+                  enabled = true,
+                },
+                propertyDeclarationTypes = {
+                  enabled = true,
+                },
+                parameterTypes = {
+                  enabled = true,
+                  suppressWhenArgumentMatchesName = true,
+                },
+                variableTypes = {
+                  enabled = true,
+                },
+              },
+            },
+          },
+      },
+      ts_ls = {
         init_options = {
-          typescript = {
-            tsdk = '/home/noname/.nvm/versions/node/v22.11.0/lib/node_modules/typescript/lib/'
+          plugins = {
+            {
+              name = "@vue/typescript-plugin",
+              location = "~/.nvm/versions/node/v22.11.0/lib/node_modules/@vue/typescript-plugin",
+              languages = {"vue"}
+            }
           }
         },
-      },
-      vtsls= {
-        filetypes = { 'javascript', 'typescript' }
+        settings = {
+          typescript = {
+            tsserver = {
+              useSyntaxServer = false,
+            },
+            inlayHints = {
+              includeInlayParameterNameHints = 'all',
+              includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+              includeInlayFunctionParameterTypeHints = true,
+              includeInlayVariableTypeHints = true,
+              includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+              includeInlayPropertyDeclarationTypeHints = true,
+              includeInlayFunctionLikeReturnTypeHints = true,
+              includeInlayEnumMemberValueHints = true,
+            }
+          }
+        }
       },
       lua_ls = {
         -- cmd = {...},
