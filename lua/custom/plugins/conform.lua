@@ -1,16 +1,6 @@
 return { -- Autoformat
   'stevearc/conform.nvim',
   lazy = false,
-  config = function()
-
-    local prettier = {
-      env = {
-        string.format("PRETTIERD_DEFAULT_CONFIG=%s", vim.fn.expand('~/Documents/vmslite/.prettierrc'))
-      }
-    }
-
-    require("conform").setup({ formatters = { prettier = prettier } })
-  end,
   keys = {
     {
       '<leader>f',
@@ -24,9 +14,6 @@ return { -- Autoformat
   opts = {
     notify_on_error = false,
     format_on_save = function(bufnr)
-      -- Disable "format_on_save lsp_fallback" for languages that don't
-      -- have a well standardized coding style. You can add additional
-      -- languages here or re-enable it for the disabled ones.
       local disable_filetypes = { c = true, cpp = true }
       return {
         timeout_ms = 500,
@@ -35,7 +22,16 @@ return { -- Autoformat
     end,
     formatters_by_ft = {
       lua = { 'stylua' },
-      javascript = { 'prettierd' },
+      javascript = {
+        'prettierd',
+      },
+    },
+    formatters = {
+      prettierd = {
+        env = {
+          string.format('PRETTIERD_DEFAULT_CONFIG=%s', vim.fn.expand '~/Documents/vmslite/.prettierrc'),
+        },
+      },
     },
   },
 }
