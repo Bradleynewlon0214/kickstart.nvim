@@ -292,12 +292,13 @@ require('lazy').setup {
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
   },
-  { import = 'custom.plugins' },
-  require 'kickstart.plugins.debug',
-  require 'kickstart.plugins.indent_line',
-  require 'kickstart.plugins.lint',
-  require 'kickstart.plugins.autopairs',
-  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  { import = 'plugins' },
+  require 'health',
+  -- require 'plugins.debug',
+  -- require 'plugins.indent_line',
+  -- require 'plugins.lint',
+  -- require 'plugins.autopairs',
+  -- require 'plugins.gitsigns', -- adds gitsigns recommend keymaps
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
