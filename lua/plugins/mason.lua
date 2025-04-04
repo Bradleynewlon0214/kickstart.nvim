@@ -4,10 +4,8 @@ return { -- LSP Configuration & Plugins
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
-
+    'saghen/blink.cmp',
     { 'j-hui/fidget.nvim', opts = {} },
-
-    { 'folke/neodev.nvim', opts = {} },
   },
   config = function()
     vim.api.nvim_create_autocmd('LspAttach', {
@@ -46,55 +44,54 @@ return { -- LSP Configuration & Plugins
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bfnr = event.buf })
           end, '[T]oggle Inlay [H]ints')
         end
-
       end,
     })
 
     local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+    capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities())
 
     local servers = {
       html = {},
       cssls = {},
       clangd = {},
       volar = {
-          init_options = {
-            vue = {
-              hybridMode = false,
-            },
+        init_options = {
+          vue = {
+            hybridMode = false,
           },
-          settings = {
-            typescript = {
-              inlayHints = {
-                enumMemberValues = {
-                  enabled = true,
-                },
-                functionLikeReturnTypes = {
-                  enabled = true,
-                },
-                propertyDeclarationTypes = {
-                  enabled = true,
-                },
-                parameterTypes = {
-                  enabled = true,
-                  suppressWhenArgumentMatchesName = true,
-                },
-                variableTypes = {
-                  enabled = true,
-                },
+        },
+        settings = {
+          typescript = {
+            inlayHints = {
+              enumMemberValues = {
+                enabled = true,
+              },
+              functionLikeReturnTypes = {
+                enabled = true,
+              },
+              propertyDeclarationTypes = {
+                enabled = true,
+              },
+              parameterTypes = {
+                enabled = true,
+                suppressWhenArgumentMatchesName = true,
+              },
+              variableTypes = {
+                enabled = true,
               },
             },
           },
+        },
       },
       ts_ls = {
         init_options = {
           plugins = {
             {
-              name = "@vue/typescript-plugin",
-              location = "~/.nvm/versions/node/v22.11.0/lib/node_modules/@vue/typescript-plugin",
-              languages = {"vue"}
-            }
-          }
+              name = '@vue/typescript-plugin',
+              location = '~/.nvm/versions/node/v22.11.0/lib/node_modules/@vue/typescript-plugin',
+              languages = { 'vue' },
+            },
+          },
         },
         settings = {
           typescript = {
@@ -110,9 +107,9 @@ return { -- LSP Configuration & Plugins
               includeInlayPropertyDeclarationTypeHints = true,
               includeInlayFunctionLikeReturnTypeHints = true,
               includeInlayEnumMemberValueHints = true,
-            }
-          }
-        }
+            },
+          },
+        },
       },
       lua_ls = {
         settings = {
@@ -123,9 +120,20 @@ return { -- LSP Configuration & Plugins
           },
         },
       },
+      pylsp = {
+        settings = {
+          pylsp = {
+            plugins = {
+              pycodestyle = {
+                ignore = { 'W391' },
+                maxLineLength = 100,
+              },
+            },
+          },
+        },
+      },
     }
 
-    require('neodev').setup({})
     require('mason').setup()
 
     local ensure_installed = vim.tbl_keys(servers or {})
