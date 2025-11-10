@@ -1,7 +1,7 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-vim.cmd [[ hi @function.builtin.lua guifg=yellow ]]
+vim.cmd [[ hi @variable guifg=yellow ]]
 
 --
 -- [[ Setting options ]]
@@ -188,9 +188,6 @@ require('lazy').setup {
       statusline.section_location = function()
         return '%2l:%-2v'
       end
-
-      -- ... and there is more!
-      --  Check out: https://github.com/echasnovski/mini.nvim
     end,
   },
   { import = 'plugins' },
